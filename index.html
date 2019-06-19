@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+    <head>
+        <title>GlicoMoni</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
+        <script src="js/firebase.js"></script>
+        <script src="js/scripts.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body class="bg-dark">
+        <div class="container py-2">
+            <div class="row">
+                <div class="col text-light">
+                    <h3>Reading</h3>
+                </div>
+            </div>
+            <div class="form-row align-items-center justify-content-center py-1">
+                <div class="col-auto text-light font-weight-bold">
+                    Date:
+                </div>
+                <div class="col-2">
+                    <input type="number" placeholder="DD" id="date_day" class="form-control form-control-lg text-center px-1" onchange="padNumber($(this).val(), 2, '0')" />
+                </div>
+                <div class="col-auto text-light font-weight-bold">
+                    /
+                </div>
+                <div class="col-2">
+                    <input type="number" placeholder="MM" id="date_month" class="form-control form-control-lg text-center px-1" onchange="padNumber($(this).val(), 2, '0')" />
+                </div>
+                <div class="col-auto text-light font-weight-bold">
+                    /
+                </div>
+                <div class="col-2">
+                    <input type="number" placeholder="YY" id="date_year" class="form-control form-control-lg text-center px-1" onchange="padNumber($(this).val(), 2, '0')" />
+                </div>
+            </div>
+            <div class="form-row align-items-center justify-content-center py-1">
+                <div class="col-auto text-light font-weight-bold">
+                    Time: 
+                </div>
+                <div class="col-2">
+                    <input type="number" placeholder="HH" id="time_hours" class="form-control form-control-lg text-center px-1" onchange="padNumber($(this).val(), 2, '0')" />
+                </div>
+                <div class="col-auto text-light font-weight-bold">
+                    :
+                </div>
+                <div class="col-2">
+                    <input type="number" placeholder="MM" id="time_minutes" class="form-control form-control-lg text-center px-1" onchange="padNumber($(this).val(), 2, '0')" />
+                </div>
+                <div class="col-auto text-light font-weight-bold">
+                    Result:
+                </div>
+                <div class="col-2">
+                    <input type="number" id="test_result" class="form-control form-control-lg text-center px-1" />
+                </div>
+            </div>
+            <div class="form-row align-items-center justify-content-center py-1">
+                <div class="col">
+                    <button type="button" class="btn btn-lg btn-info btn-block" onclick="saveReading()">Save</button>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-light">
+                    <h3>Results</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row justify-content-center px-4">
+                        <div class="col-4 bg-secondary border-bottom border-light font-weight-bold text-light">Date</div>
+                        <div class="col-4 bg-secondary border-bottom border-light font-weight-bold text-light">Time</div>
+                        <div class="col-4 bg-secondary border-bottom border-light font-weight-bold text-light">Result</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="result" class="col">
+                    <div class="row justify-content-center px-4">
+                        <div class="col-12 bg-white text-center">
+                            <span class="text-monospace">no data</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-light">
+                    <h3>Averages</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center px-4">
+                <div class="col bg-secondary border-bottom border-light font-weight-bold text-light">Daily</div>
+                <div class="col bg-secondary border-bottom border-light font-weight-bold text-light">Weekly</div>
+                <div class="col bg-secondary border-bottom border-light font-weight-bold text-light">Monthly</div>
+            </div>
+            <div class="row justify-content-center px-4 text-center">
+                <div id="average-day" class="col-4 bg-white"><span class="text-monospace">no data</span></div>
+                <div id="average-week" class="col-4 bg-white"><span class="text-monospace">no data</span></div>
+                <div id="average-month" class="col-4 bg-white"><span class="text-monospace">no data</span></div>
+            </div>
+            <!-- <div class="row px-4 text-light font-weight-bold">
+                <div class="col-auto">Averages:</div>
+            </div>
+            <div class="row px-4 text-light font-weight-bold">
+                <div class="col-4">Daily:</div>
+                <div class="col-4">Weekly:</div>
+                <div class="col-4">Monthly:</div>
+            </div> -->
+        </div>
+        <div id="toast-container" class="row fixed-bottom justify-content-center py-4">
+            <div id="toast-message"><span id="toast-icon" class="font-weight-bold mr-2"></span><span id="toast-text"></span></div>
+        </div>
+    </body>
+</html>
