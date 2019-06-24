@@ -6,6 +6,6 @@ Tool I use to keep track of my glucose levels during the day. It shows the last 
 
 ### Planned features
 - [ ] Creating custom reports
-- [ ] Transform the tool into a proper *web app*
+- [X] Transform the tool into a proper *web app*
 - [ ] Database syncing
 - [ ] Offline saving of test results
