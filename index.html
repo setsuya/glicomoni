@@ -3,7 +3,8 @@
     <head>
         <title>GlicoMoni</title>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+        <link rel="icon" ref="img/favicon.png" type="image/png" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -64,6 +65,9 @@
                 <div class="col">
                     <button type="button" class="btn btn-lg btn-info btn-block" onclick="saveReading()">Save</button>
                 </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-lg btn-secondary btn-block" onclick="resetForm()">&#x21bb;</button>
+                </div>
             </div>
             <div class="row mt-4">
                 <div class="col text-light">
@@ -103,14 +107,6 @@
                 <div id="average-week" class="col-4 bg-white"><span class="text-monospace">no data</span></div>
                 <div id="average-month" class="col-4 bg-white"><span class="text-monospace">no data</span></div>
             </div>
-            <!-- <div class="row px-4 text-light font-weight-bold">
-                <div class="col-auto">Averages:</div>
-            </div>
-            <div class="row px-4 text-light font-weight-bold">
-                <div class="col-4">Daily:</div>
-                <div class="col-4">Weekly:</div>
-                <div class="col-4">Monthly:</div>
-            </div> -->
         </div>
         <div id="toast-container" class="row fixed-bottom justify-content-center py-4">
             <div id="toast-message"><span id="toast-icon" class="font-weight-bold mr-2"></span><span id="toast-text"></span></div>

@@ -1,12 +1,5 @@
 $(document).ready(function(){
-    let current_date = new Date();
-
-    $("#date_day").val(padNumber(current_date.getDate(), 2, "0"));
-    $("#date_month").val(padNumber((current_date.getMonth() + 1), 2, "0"));
-    $("#date_year").val(current_date.getFullYear().toString().substr(-2));
-    $("#time_hours").val(padNumber(current_date.getHours(), 2, "0"));
-    $("#time_minutes").val(padNumber(current_date.getMinutes(), 2, "0"));
-
+    resetForm();
     listReadings();
 });
 
@@ -14,7 +7,6 @@ function listReadings(){
     showToast("warning", "Loading data...");
 
     glicomoni_db.collection("readings").orderBy("date", "desc").limit(20).get().then((query_snapshot) => {
-        // let result = `<div class="row justify-content-center px-4"><div class="col bg-secondary border-bottom border-light font-weight-bold text-light">Date</div><div class="col bg-secondary border-bottom border-light font-weight-bold text-light">Time</div><div class="col bg-secondary border-bottom border-light font-weight-bold text-light">Result</div></div>`;
         let result = "";
         let current_date = "";
         let current_row = 0;
@@ -170,6 +162,17 @@ function validateForm(){
     }else{
         return true;
     }
+}
+
+function resetForm(){
+    let current_date = new Date();
+
+    $("#date_day").val(padNumber(current_date.getDate(), 2, "0"));
+    $("#date_month").val(padNumber((current_date.getMonth() + 1), 2, "0"));
+    $("#date_year").val(current_date.getFullYear().toString().substr(-2));
+    $("#time_hours").val(padNumber(current_date.getHours(), 2, "0"));
+    $("#time_minutes").val(padNumber(current_date.getMinutes(), 2, "0"));
+    $("#test_result").val("");
 }
 
 function showToast(type, message){
