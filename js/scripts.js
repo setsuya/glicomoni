@@ -143,9 +143,9 @@ function saveReading(timestamp, value){
 function validateForm(){
     let invalid_fields = [];
 
-    $("input[type=number]").removeClass("border-danger");
+    $("reading input[type=number]").removeClass("border-danger");
 
-    $("input[type=number]").each(function(){
+    $("#reading input[type=number]").each(function(){
         if($(this).val() === ""){
             invalid_fields.push($(this));
         }
