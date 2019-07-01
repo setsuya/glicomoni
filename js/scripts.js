@@ -27,11 +27,11 @@ function listReadings(){
         });
 
         $("#result").html(result);
+
+        getAverages();
+
+        showToast("success", "Data loaded!");
     });
-
-    getAverages();
-
-    showToast("success", "Data loaded!");
 }
 
 function getAverages(){
