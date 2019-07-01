@@ -70,9 +70,9 @@ function getAverages(){
             }
         });
 
-        average_day = (quantity_day / total_day).toFixed(2).replace(".", ",");
-        average_week = (quantity_week / total_week).toFixed(2).replace(".", ",");
-        average_month = (quantity_month / total_month).toFixed(2).replace(".", ",");
+        average_day = (total_day > 0) ? (quantity_day / total_day).toFixed(2).replace(".", ",") : "n/a";
+        average_week = (total_week > 0) ? (quantity_week / total_week).toFixed(2).replace(".", ",") : "n/a";
+        average_month = (total_month > 0) ? (quantity_month / total_month).toFixed(2).replace(".", ",") : "n/a";
 
         $("#average-day").text(average_day);
         $("#average-week").text(average_week);
@@ -133,11 +133,45 @@ function saveReading(timestamp, value){
     .then((doc) => {
         showToast("success", "Saved successfully!");
 
+        resetForm();
         listReadings();
     })
     .catch((error) => {
         showToast("error", `Error saving: ${error}`);
     });
+}
+
+function createReport(type){
+    switch(type){
+        case "1week":
+            console.log("1 week report.");
+
+            break;
+        case "1month":
+            console.log("1 month report.");
+
+            break;
+        case "3month":
+            console.log("3 months report.");
+
+            break;
+        case "6month":
+            console.log("6 months report.");
+
+            break;
+        case "1year":
+            console.log("1 year report.");
+
+            break;
+        case "all":
+            console.log("All dates report.");
+
+            break;
+        case "custom":
+            console.log("Custom report.");
+
+            break;
+    }
 }
 
 function validateForm(){
