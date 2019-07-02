@@ -142,36 +142,104 @@ function saveReading(timestamp, value){
 }
 
 function createReport(type){
+    let start_date;
+    let end_date;
+
     switch(type){
         case "1week":
             console.log("1 week report.");
+
+            start_date = new Date();
+            end_date = new Date(start_date.getFullYear(), start_date.getMonth(), start_date.getDate() - 7);
 
             break;
         case "1month":
             console.log("1 month report.");
 
+            start_date = new Date();
+            end_date = new Date(start_date.getFullYear(), start_date.getMonth() - 1, start_date.getDate());
+
             break;
         case "3month":
             console.log("3 months report.");
+
+            start_date = new Date();
+            end_date = new Date(start_date.getFullYear(), start_date.getMonth() - 3, start_date.getDate());
 
             break;
         case "6month":
             console.log("6 months report.");
 
+            start_date = new Date();
+            end_date = new Date(start_date.getFullYear(), start_date.getMonth() - 6, start_date.getDate());
+
             break;
         case "1year":
             console.log("1 year report.");
+
+            start_date = new Date();
+            end_date = new Date(start_date.getFullYear() - 1, start_date.getMonth(), start_date.getDate());
 
             break;
         case "all":
             console.log("All dates report.");
 
+            start_date = new Date();
+            end_date = new Date(1900, 1, 1);
+
             break;
         case "custom":
             console.log("Custom report.");
 
+            start_date = new Date(`20${$("#start_year").val()}`, `${$("#start_month").val() - 1}`, `${$("#start_day").val()}`);
+            end_date = new Date(`20${$("#end_year").val()}`, `${$("#end_month").val() - 1}`, `${$("#end_day").val()}`);
+
             break;
     }
+
+    console.log(start_date);
+    console.log(end_date);
+
+    glicomoni_db.collection("readings").orderBy("date", "desc").startAt(start_date).endAt(end_date).get().then((query_snapshot) => {
+        let result = [["Data", "Hora", "Resultado"]];
+        let current_date = "";
+
+        query_snapshot.forEach((doc) => {
+            let readable_date = parseFirebaseDate(doc.data().date);
+
+            if(readable_date.date !== current_date){
+                current_date = readable_date.date;
+
+                result.push([{text: readable_date.date, alignment: "left"}, {text: readable_date.time, alignment: "center"}, {text: doc.data().value.toString(), alignment: "right"}]);
+            }else{
+                result.push([{text: "", alignment: "left"}, {text: readable_date.time, alignment: "center"}, {text: doc.data().value.toString(), alignment: "right"}]);
+            }
+        });
+
+        let content_definition = {
+            header: {
+                columns: [
+                    {text: "GlicoMoni", alignment: "left", margin: [10, 10, 0, 0]},
+                    {text: "https://setsuya.github.io/glicomoni", alignment: "right", margin: [0, 10, 10, 0]}
+                ]
+            },
+            footer: function(current_page, total_pages){
+                return {text: `Página ${current_page} de ${total_pages}`, alignment: "center"};
+            },
+            content: [
+                {
+                    layout: "lightHorizontalLines",
+                    table: {
+                        widths: ["*", "*", "*"],
+                        headerRows: 1,
+                        body: result,
+                    }
+                }
+            ]
+        };
+
+        pdfMake.createPdf(content_definition).download("report.pdf");
+    });
 }
 
 function validateForm(){
